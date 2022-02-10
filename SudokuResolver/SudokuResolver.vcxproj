@@ -155,6 +155,10 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\SDL2\lib\x86\SDL2.lib" />
+    <Library Include="lib\SDL2\lib\x86\SDL2main.lib" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

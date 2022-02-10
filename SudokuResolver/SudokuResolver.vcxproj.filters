@@ -7,6 +7,9 @@
     <Filter Include="graphics">
       <UniqueIdentifier>{d35ee3f7-3b78-4754-b2af-957b8709f3b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{b939ab7c-6ca3-4a3b-baa4-dd2a80cc9b32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameboard.h">
@@ -24,5 +27,13 @@
     <ClCompile Include="graphics.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\SDL2\lib\x86\SDL2main.lib">
+      <Filter>lib</Filter>
+    </Library>
+    <Library Include="lib\SDL2\lib\x86\SDL2.lib">
+      <Filter>lib</Filter>
+    </Library>
   </ItemGroup>
 </Project>
