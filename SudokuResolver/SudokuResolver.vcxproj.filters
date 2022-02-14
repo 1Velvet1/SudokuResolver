@@ -36,4 +36,9 @@
       <Filter>lib</Filter>
     </Library>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\SDL2\lib\x86\SDL2.dll">
+      <Filter>lib</Filter>
+    </None>
+  </ItemGroup>
 </Project>

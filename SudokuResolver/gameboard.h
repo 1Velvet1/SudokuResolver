@@ -1,6 +1,9 @@
 #ifndef GAMEBOARD___H
 
+#define WIN32_LEAN_AND_MEAN
+
 #include <stdint.h>
+#include <Windows.h>
 
 
 class Gameboard
@@ -9,7 +12,7 @@ class Gameboard
 public:
     
     Gameboard();  
-    Gameboard(const uint16_t val[81]);
+    explicit Gameboard(const uint16_t val[81]);
 
     uint16_t getElement(const size_t row, const size_t column) const;
     uint16_t* getValArray() const;

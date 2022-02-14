@@ -6,10 +6,12 @@
 
 
 int main(int argc, char* argv[]) {
-
-
-
-    std::cin.get();
+      
+   SDL::changeWindowDimensions(800, 600);
+   SDL& main_ = SDL::GetInstance();
+   
+   main_.changeBackgroundColour(0xFF, 0xF0, 0xF0, 0xFF);
+   
 
     return 0;
 
