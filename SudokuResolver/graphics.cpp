@@ -19,6 +19,8 @@ SDL_INIT_ERROR SDL::initSDL() {
     this->window = SDL_CreateWindow("Sudoku Solver", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->winWidth, this->winHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (this->window == nullptr) { return SDL_INIT_ERROR::SDL_WINDOW_CREATE; }
 
+    SDL_SetWindowMinimumSize(this->window, 600, 400);
+
     this->renderer = SDL_CreateRenderer(this->window, -1, NULL);
     if (this->renderer == nullptr) { return SDL_INIT_ERROR::SDL_RENDERER_CREATE; }
 
@@ -45,21 +47,8 @@ void SDL::eventHandler() {
 
         SDL_WaitEvent(&e);
 
-        switch (e.type) {
-
-        case SDL_QUIT:
-            SDL::isCreated = false;
-            std::cout << "Im dumbass!!!!\n";            
-
-            break;
-
-        default:
-
-            std::cout << "FUCK\n";
-
-            break;
-
-        }
+        if (e.type == SDL_QUIT) { SDL::isCreated = false; }
+        else { this->ClearRender(); }
 
 
     }
@@ -114,7 +103,7 @@ void SDL::invoke() {
         abort();
 
     }
-    
+
     eventHandler();
 
 }
@@ -122,18 +111,29 @@ void SDL::invoke() {
 SDL::SDL() :window(nullptr), renderer(nullptr), backgroundCol({0x0, 0x0 ,0x0, 0xFF}), winWidth(SDL::SCREENWIDTH), winHeight(SDL::SCREENHEIGHT)
 {      
     this->thisThread = std::thread(&SDL::invoke, this);
-    this->thisThread.join();
-
 
 }
 
 SDL::~SDL() {
 
-    SDL_RenderClear(this->renderer);
-    SDL_DestroyRenderer(this->renderer);
-    SDL_DestroyWindow(this->window);    
+    if (this->isCreated) {
+
+        SDL_RenderClear(this->renderer);
+        SDL_DestroyRenderer(this->renderer);
+        SDL_DestroyWindow(this->window);
+        isCreated = false;
+
+    }
 
 }
+
+std::thread& SDL::getWindowThread() {
+
+    return this->thisThread;
+
+}
+
+//-------------------------------------------------------//
 
 void SDL::changeBackgroundColour(const uint8_t red, const uint8_t green, const uint8_t blue, const uint8_t alpha) {
 
@@ -151,8 +151,6 @@ void SDL::ClearRender() {
     SDL_RenderPresent(this->renderer);
 
 }
-
-
 
 void SDL::drawGrid(const GRID_POSITION place) {
 

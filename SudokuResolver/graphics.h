@@ -35,7 +35,7 @@ class SDL {
 
 public: //static
        
-
+    //after class has been initialized window thread should be joined via GetWindowThread()
     static SDL& GetInstance() {
         
         static SDL instance;
@@ -79,7 +79,8 @@ public:
     void drawGrid(const GRID_POSITION place);
     void fillGrid(const GRID_POSITION place, const uint16_t vals[81]);
     void clearGrid(const GRID_POSITION place);
-    
+    std::thread& getWindowThread();
+
 private:
 
     SDL_INIT_ERROR initSDL();
