@@ -7,9 +7,12 @@
 #include <vector>
 #include <iostream>
 #include <thread>
+#include <vector>
 #include "lib/SDL2/include/SDL.h"
 
-
+constexpr int BASE_WINDOW_WIDTH = 600;
+constexpr int BASE_WINDOW_HEIGHT = 400;
+using matrice =  std::vector<std::vector<uint32_t>>;
 
 enum class SDL_INIT_ERROR {
 
@@ -25,9 +28,7 @@ enum class SDL_INIT_ERROR {
 enum class GRID_POSITION {
 
     TOP_LEFT = 1,
-    TOP_RIGHT = 2,
-    BOTTOM_LEFT = 3,
-    BOTTOM_RIGHT = 4
+    TOP_RIGHT = 2
 
 };
 
@@ -52,7 +53,7 @@ public: //static
     }
 
     //must be called before class creation
-    static void changeWindowDimensions(size_t width, size_t height) {
+    static void changeWindowDimensions(int width, int height) {
 
         if (!isCreated) {
 
@@ -63,37 +64,45 @@ public: //static
 
     }
 
+    static bool isCreated;
+
 private:
 
-    static size_t SCREENWIDTH;
-    static size_t SCREENHEIGHT;
-    static bool isCreated;
+    static int SCREENWIDTH;
+    static int SCREENHEIGHT;
 
 public:
 
     ~SDL();
 
-    void ClearRender();
+    void UpdateRender();
     void changeBackgroundColour(const uint8_t red, const uint8_t green, const uint8_t blue, const uint8_t alpha);    
     void drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number);    
     void drawGrid(const GRID_POSITION place);
     void fillGrid(const GRID_POSITION place, const uint16_t vals[81]);
     void clearGrid(const GRID_POSITION place);
+
     std::thread& getWindowThread();
 
 private:
 
+    matrice scaleMatrice() const;
+    uint32_t toRGB(uint8_t R, uint8_t G, uint8_t B) const;
+    void RGBtoColr(const uint32_t& RGB, uint8_t& R, uint8_t& G, uint8_t& B) const;
+    void ClearRender();
     SDL_INIT_ERROR initSDL();
     void eventHandler();
     void invoke();
     SDL();
     SDL(SDL&);
 
+    bool isUpdating;
+    matrice screenMatrice;
     std::thread thisThread;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    size_t winWidth;
-    size_t winHeight;
+    int winWidth;
+    int winHeight;
     std::vector<uint8_t> backgroundCol;
 
 };

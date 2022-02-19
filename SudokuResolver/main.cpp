@@ -11,13 +11,13 @@ void colourTest() {
 
     while (true) {
 
-        main_.changeBackgroundColour(0x00, 0x00, 0xFF, 0x0F);
-        Sleep(400);
-        main_.changeBackgroundColour(0xFF, 0x00, 0x00, 0x0F);
-        Sleep(400);
+        if (SDL::isCreated) { break; }
 
-    }
+    }       
 
+    main_.drawGrid(GRID_POSITION::TOP_LEFT);
+    Sleep(5000);
+    main_.drawGrid(GRID_POSITION::TOP_RIGHT);
 }
 
 
@@ -27,6 +27,8 @@ int main(int argc, char* argv[]) {
    SDL& main_ = SDL::GetInstance();
    std::thread& t1 = main_.getWindowThread();
    std::thread t2(colourTest);
+
+   main_.changeBackgroundColour(0xFF, 0xFD, 0xD0, 0xff);
 
    t1.join();
    t2.join();
