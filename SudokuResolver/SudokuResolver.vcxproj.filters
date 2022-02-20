@@ -7,8 +7,17 @@
     <Filter Include="graphics">
       <UniqueIdentifier>{d35ee3f7-3b78-4754-b2af-957b8709f3b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lib">
+    <Filter Include="ext">
+      <UniqueIdentifier>{167b70b7-6749-43b0-bd1a-2d178d0d05d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\lib">
       <UniqueIdentifier>{b939ab7c-6ca3-4a3b-baa4-dd2a80cc9b32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\res">
+      <UniqueIdentifier>{cc7f6eea-9424-4755-bf31-afdb0f82740d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BMP">
+      <UniqueIdentifier>{45a1621b-5bb4-4386-97e7-8f50e8a03bd2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -17,6 +26,9 @@
     </ClInclude>
     <ClInclude Include="graphics.h">
       <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="BMP.h">
+      <Filter>BMP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -27,18 +39,50 @@
     <ClCompile Include="graphics.cpp">
       <Filter>graphics</Filter>
     </ClCompile>
+    <ClCompile Include="BMP.cpp">
+      <Filter>BMP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\SDL2\lib\x86\SDL2main.lib">
-      <Filter>lib</Filter>
+      <Filter>ext\lib</Filter>
     </Library>
     <Library Include="lib\SDL2\lib\x86\SDL2.lib">
-      <Filter>lib</Filter>
+      <Filter>ext\lib</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\SDL2\lib\x86\SDL2.dll">
-      <Filter>lib</Filter>
+      <Filter>ext\lib</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\1.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\2.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\3.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\4.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\5.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\6.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\7.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\8.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
+    <Image Include="res\9.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
   </ItemGroup>
 </Project>

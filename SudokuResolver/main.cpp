@@ -3,17 +3,15 @@
 
 #include "gameboard.h"
 #include "graphics.h"
+#include "BMP.h"
 
 
 void colourTest() {
 
     SDL& main_ = SDL::GetInstance();
 
-    while (true) {
+    while (!SDL::isCreated);
 
-        if (SDL::isCreated) { break; }
-
-    }       
 
     main_.drawGrid(GRID_POSITION::TOP_LEFT);
     Sleep(5000);
@@ -32,7 +30,7 @@ int main(int argc, char* argv[]) {
 
    t1.join();
    t2.join();
-
+   
    
 
     return 0;

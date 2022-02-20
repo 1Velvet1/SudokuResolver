@@ -4,11 +4,13 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include <Windows.h>
-#include <vector>
 #include <iostream>
 #include <thread>
 #include <vector>
+#include <map>
+
 #include "lib/SDL2/include/SDL.h"
+#include "BMP.h"
 
 constexpr int BASE_WINDOW_WIDTH = 600;
 constexpr int BASE_WINDOW_HEIGHT = 400;
@@ -59,19 +61,19 @@ public: //static
 
             SCREENWIDTH = width;
             SCREENHEIGHT = height;
-
+                
         }
 
     }
 
-    static bool isCreated;
+    volatile static bool isCreated;
 
 private:
 
     static int SCREENWIDTH;
     static int SCREENHEIGHT;
 
-public:
+public: //non-static
 
     ~SDL();
 
@@ -104,6 +106,7 @@ private:
     int winWidth;
     int winHeight;
     std::vector<uint8_t> backgroundCol;
+    std::map<image, uint16_t> numbers; //TODO
 
 };
 

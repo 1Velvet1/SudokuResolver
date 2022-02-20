@@ -1,11 +1,10 @@
 #include "graphics.h"
 #include <iostream>
 
-
 //static member initizlization
 int SDL::SCREENWIDTH = BASE_WINDOW_WIDTH;
 int SDL::SCREENHEIGHT = BASE_WINDOW_HEIGHT;
-bool SDL::isCreated = false;
+volatile bool SDL::isCreated = false;
 
 //init functions
 
@@ -158,6 +157,13 @@ void SDL::changeBackgroundColour(const uint8_t red, const uint8_t green, const u
 
 }
 
+void SDL::drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number)
+{
+    
+
+
+}
+
 void SDL::ClearRender() {
 
     SDL_SetRenderDrawColor(this->renderer, this->backgroundCol[0], this->backgroundCol[1], this->backgroundCol[2], this->backgroundCol[3]);
@@ -252,14 +258,14 @@ void SDL::UpdateRender() {
 }
 
 void SDL::drawGrid(const GRID_POSITION place) {
-        
+    
     matrice temp = this->screenMatrice;
-    size_t rows = 0;
+    size_t rows = 0;    
 
     switch (place) {
 
-    case GRID_POSITION::TOP_LEFT:
-        
+    case GRID_POSITION::TOP_LEFT:     
+
         while (rows < 10) {
 
             for (size_t i = 0; i < 199; i++) {
@@ -302,7 +308,7 @@ void SDL::drawGrid(const GRID_POSITION place) {
    
 
     }
-    while(isUpdating){}
+    while (isUpdating);
 
     this->screenMatrice = temp;
 
