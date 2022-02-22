@@ -14,6 +14,9 @@
 
 constexpr int BASE_WINDOW_WIDTH = 600;
 constexpr int BASE_WINDOW_HEIGHT = 400;
+constexpr int TOP_GRID_OFFSET = 13;
+constexpr int TOP_LEFT_GRID_xOFFSET = 20;
+constexpr int TOP_RIGHT_GRID_xOFFSET = 320;
 using matrice =  std::vector<std::vector<uint32_t>>;
 
 enum class SDL_INIT_ERROR {
@@ -30,7 +33,8 @@ enum class SDL_INIT_ERROR {
 enum class GRID_POSITION {
 
     TOP_LEFT = 1,
-    TOP_RIGHT = 2
+    TOP_RIGHT,
+    NUMBER_GRID
 
 };
 
@@ -79,7 +83,7 @@ public: //non-static
 
     void UpdateRender();
     void changeBackgroundColour(const uint8_t red, const uint8_t green, const uint8_t blue, const uint8_t alpha);    
-    void drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number);    
+    void drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number);
     void drawGrid(const GRID_POSITION place);
     void fillGrid(const GRID_POSITION place, const uint16_t vals[81]);
     void clearGrid(const GRID_POSITION place);
@@ -98,6 +102,8 @@ private:
     SDL();
     SDL(SDL&);
 
+    bool leftGridDrawn;
+    bool rightGridDrawn;
     bool isUpdating;
     matrice screenMatrice;
     std::thread thisThread;
@@ -106,7 +112,7 @@ private:
     int winWidth;
     int winHeight;
     std::vector<uint8_t> backgroundCol;
-    std::map<image, uint16_t> numbers; //TODO
+    std::map<uint16_t, image> numbersMap;
 
 };
 

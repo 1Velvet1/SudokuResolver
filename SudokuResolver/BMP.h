@@ -12,12 +12,14 @@ constexpr uint16_t bmpHeaderSize = 14;
 constexpr uint16_t bmpDIBsize = 40;
 
 
+
 class BMP
 {
 
 public:
     
     BMP();
+    BMP& operator=(BMP&& other);
     explicit BMP(const char* path);
     ~BMP();
     image getImage() const;

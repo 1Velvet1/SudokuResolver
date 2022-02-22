@@ -1,5 +1,6 @@
 #include "graphics.h"
 #include <iostream>
+#include <string>
 
 //static member initizlization
 int SDL::SCREENWIDTH = BASE_WINDOW_WIDTH;
@@ -12,6 +13,8 @@ SDL_INIT_ERROR SDL::initSDL() {
 
     winWidth = SDL::SCREENWIDTH;
     winHeight = SDL::SCREENHEIGHT;
+    leftGridDrawn = false;
+    rightGridDrawn = false;
 
     if (SDL_Init(SDL_INIT_EVERYTHING)) { return SDL_INIT_ERROR::SDL_INIT_SUBSYSTEM; }
     
@@ -22,6 +25,25 @@ SDL_INIT_ERROR SDL::initSDL() {
 
     this->screenMatrice.resize(BASE_WINDOW_HEIGHT);
     for (auto& row : this->screenMatrice) { row = std::vector<uint32_t>(BASE_WINDOW_WIDTH); }
+
+    BMP tempBMP;
+
+    for (size_t i = 1; i < 10; i++) {
+
+        std::string path = ".\\res\\" + std::to_string(i) + ".bmp";
+
+        try {
+
+            tempBMP = BMP(path.c_str());
+            this->numbersMap.insert(std::pair<uint16_t, image>(i, tempBMP.getImage()));
+
+        }
+        catch (const std::exception& IOexception) {
+
+            std::cout << "Cannot load resource files: " << IOexception.what() << "\n";
+        }
+
+    }
 
     this->renderer = SDL_CreateRenderer(this->window, -1, NULL);
     if (this->renderer == nullptr) { return SDL_INIT_ERROR::SDL_RENDERER_CREATE; }
@@ -42,7 +64,8 @@ SDL_INIT_ERROR SDL::initSDL() {
 void SDL::eventHandler() {
 
     SDL_Event e;
-    
+    int x, y;
+
     while (SDL::isCreated) {
 
         while (SDL_PollEvent(&e)) {
@@ -56,12 +79,13 @@ void SDL::eventHandler() {
                 SDL_GetWindowSize(this->window, &this->winWidth, &this->winHeight);
                 break;
             default:
-                break;
+                break;//113 174 row 6 , col 4
 
             }
 
         }
         
+
         this->UpdateRender();
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
@@ -157,10 +181,65 @@ void SDL::changeBackgroundColour(const uint8_t red, const uint8_t green, const u
 
 }
 
+
 void SDL::drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number)
 {
-    
 
+    if (row == 0 || column == 0 || number >= 10) { return; }
+
+    const auto& curNum = this->numbersMap.find(number);
+    const image& num = curNum->second;
+    matrice temp = this->screenMatrice;
+    size_t xOffset = 0, yOffset = 0;
+
+    switch (place) {
+
+    case GRID_POSITION::TOP_LEFT:
+
+        if (!this->leftGridDrawn) { return; }
+
+        yOffset = TOP_GRID_OFFSET + (num.size() + 2) * (row - 1) + 2;
+        xOffset = TOP_LEFT_GRID_xOFFSET + (num[0].size() + 2) * (column - 1) + 2;
+
+        for (size_t i = 0; i < 20; i++) {
+
+            for (size_t j = 0; j < 20; j++) {
+
+                temp[yOffset + i][xOffset + j] = (num[i][j] == 0xFFFFFF) ? 0 : (num[i][j] == 0) ? 1 : num[i][j];
+
+            }
+            
+        }
+
+        break;
+    case GRID_POSITION::TOP_RIGHT:
+
+        if (!this->rightGridDrawn) { return; }
+
+        yOffset = TOP_GRID_OFFSET + (num.size() + 2) * (row - 1) + 2;
+        xOffset = TOP_RIGHT_GRID_xOFFSET + (num[0].size() + 2) * (column - 1) + 2;
+
+        for (size_t i = 0; i < 20; i++) {
+
+            for (size_t j = 0; j < 20; j++) {
+
+                temp[yOffset + i][xOffset + j] = (num[i][j] == 0xFFFFFF) ? 0 : (num[i][j] == 0) ? 1 : num[i][j];
+
+            }
+
+        }
+
+        break;
+
+    case GRID_POSITION::NUMBER_GRID:
+
+        break;
+
+    }
+
+    while (isUpdating);
+
+    this->screenMatrice = temp;
 
 }
 
@@ -269,7 +348,7 @@ void SDL::drawGrid(const GRID_POSITION place) {
         while (rows < 10) {
 
             for (size_t i = 0; i < 199; i++) {
-                temp[13 + rows * 22][20 + i] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
+                temp[TOP_GRID_OFFSET + rows * 22][TOP_LEFT_GRID_xOFFSET + i] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
             }
             rows++;
 
@@ -278,18 +357,20 @@ void SDL::drawGrid(const GRID_POSITION place) {
         while (rows < 10) {
         
             for (size_t i = 0; i < 199; i++) {
-                temp[13 + i][20 + rows * 22] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
+                temp[TOP_GRID_OFFSET + i][TOP_LEFT_GRID_xOFFSET + rows * 22] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
         
             }
             rows++;
         
         }
+        this->leftGridDrawn = true;
+
         break;
     case GRID_POSITION::TOP_RIGHT:
         while (rows < 10) {
 
             for (size_t i = 0; i < 199; i++) {
-                temp[13 + rows * 22][320 + i] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
+                temp[TOP_GRID_OFFSET + rows * 22][TOP_RIGHT_GRID_xOFFSET + i] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
             }
             rows++;
 
@@ -298,12 +379,14 @@ void SDL::drawGrid(const GRID_POSITION place) {
         while (rows < 10) {
         
             for (size_t i = 0; i < 199; i++) {
-                temp[13 + i][320 + rows * 22] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
+                temp[TOP_GRID_OFFSET + i][TOP_RIGHT_GRID_xOFFSET + rows * 22] = rows % 3 == 0 ? 0x1 : 0xA9A9A9;
         
             }
             rows++;
         
         }
+        this->rightGridDrawn = true;
+
         break;
    
 
@@ -312,4 +395,8 @@ void SDL::drawGrid(const GRID_POSITION place) {
 
     this->screenMatrice = temp;
 
+}
+
+void SDL::clearGrid(const GRID_POSITION place)
+{
 }

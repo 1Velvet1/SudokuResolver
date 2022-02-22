@@ -1,6 +1,6 @@
 #include "BMP.h"
+#include <string>
 
-#include <iostream>
 
 BMP::BMP() 
 {
@@ -16,15 +16,36 @@ BMP::BMP()
 
 }
 
+BMP& BMP::operator=(BMP&& other)
+{
+
+    std::swap(this->bmpDIB, other.bmpDIB);
+    std::swap(this->bmpHeader, other.bmpHeader);
+    std::swap(this->img, other.img);
+
+    this->bitDepth = other.bitDepth;
+    this->DIBsize = other.DIBsize;
+    this->height = other.height;
+    this->width = other.width;
+    this->fileSize = other.fileSize;
+    this->imgSize = other.imgSize;
+    this->path_ = other.path_;
+    this->paddingAmount = other.paddingAmount;
+
+
+    return *this;
+}
+
 BMP::BMP(const char* path):path_(path)
 {
     
     std::ifstream input(this->path_, std::ios::in | std::ios::binary);
 
     if (!input.is_open()) { 
+        
+        std::string excp = "File \"" + std::string(this->path_) + "\" cannot be read";
 
-     std::cout << "Failed to load image file";
-    *this = BMP();
+     throw std::exception(excp.c_str());
 
     }
     else {
