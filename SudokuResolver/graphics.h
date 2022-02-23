@@ -84,8 +84,9 @@ public: //non-static
     void UpdateRender();
     void changeBackgroundColour(const uint8_t red, const uint8_t green, const uint8_t blue, const uint8_t alpha);    
     void drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number);
+    void eraseNumber(const GRID_POSITION place, const size_t row, const size_t column);
     void drawGrid(const GRID_POSITION place);
-    void fillGrid(const GRID_POSITION place, const uint16_t vals[81]);
+    void fillGrid(const GRID_POSITION place, const std::vector<std::vector<uint16_t>>&);
     void clearGrid(const GRID_POSITION place);
 
     std::thread& getWindowThread();

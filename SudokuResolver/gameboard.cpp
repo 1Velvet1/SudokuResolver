@@ -2,23 +2,22 @@
 
 Gameboard::Gameboard() {
 
-    for (size_t i = 0; i < 81; i++) { values[i] = 0; }
+    for (size_t i = 0; i < 10; i++) {
+
+        for (size_t j = 0; j < 10; j++) {
+
+            this->vals_[i][j] = 0;
+
+        }
+
+    }
 
 
 }
 
-Gameboard::Gameboard(const uint16_t val[81]) {
+Gameboard::Gameboard(const board& vals) {
 
-    if (val != nullptr) {
-
-        memcpy(values, val, 81 * sizeof(uint16_t));
-
-    }
-    else {
-
-        *this = Gameboard();
-
-    }
+    this->vals_ = vals;
 
 }
 
