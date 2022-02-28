@@ -11,13 +11,14 @@
 
 #include "lib/SDL2/include/SDL.h"
 #include "BMP.h"
+#include "defines.h"
 
 constexpr int BASE_WINDOW_WIDTH = 600;
 constexpr int BASE_WINDOW_HEIGHT = 400;
 constexpr int TOP_GRID_OFFSET = 13;
 constexpr int TOP_LEFT_GRID_xOFFSET = 20;
 constexpr int TOP_RIGHT_GRID_xOFFSET = 320;
-using matrice =  std::vector<std::vector<uint32_t>>;
+
 
 enum class SDL_INIT_ERROR {
 
@@ -83,10 +84,19 @@ public: //non-static
 
     void UpdateRender();
     void changeBackgroundColour(const uint8_t red, const uint8_t green, const uint8_t blue, const uint8_t alpha);    
-    void drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number);
+
+    /// <summary>
+/// call this function to draw a number in specific place
+/// </summary>
+/// <param name="place">The grid in which the number should be drawn</param>
+/// <param name="row">row of the number: 1..9</param>
+/// <param name="column">column of the number 1..9</param>
+/// <param name="number">number to be drawn: 1..9</param>
+/// <param name="colour">the colour of the number (black is 0x1, 0x0 is background</param>
+    void drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number, const RGBcolour colour);
     void eraseNumber(const GRID_POSITION place, const size_t row, const size_t column);
     void drawGrid(const GRID_POSITION place);
-    void fillGrid(const GRID_POSITION place, const std::vector<std::vector<uint16_t>>&);
+    void fillGrid(const GRID_POSITION place, const std::vector<std::vector<uint16_t>>&, const RGBcolour colour);
     void clearGrid(const GRID_POSITION place);
 
     std::thread& getWindowThread();
@@ -95,7 +105,7 @@ private:
 
     matrice scaleMatrice() const;
     uint32_t toRGB(uint8_t R, uint8_t G, uint8_t B) const;
-    void RGBtoColr(const uint32_t& RGB, uint8_t& R, uint8_t& G, uint8_t& B) const;
+    void RGBtoColr(const RGBcolour& RGB, uint8_t& R, uint8_t& G, uint8_t& B) const;
     void ClearRender();
     SDL_INIT_ERROR initSDL();
     void eventHandler();
