@@ -162,11 +162,14 @@ xcopy /y /d "$(ProjectDir)res\9.bmp" "$(OutDir)res\"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BacktrackResolver.h" />
     <ClInclude Include="BMP.h" />
+    <ClInclude Include="defines.h" />
     <ClInclude Include="gameboard.h" />
     <ClInclude Include="graphics.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BacktrackResolver.cpp" />
     <ClCompile Include="BMP.cpp" />
     <ClCompile Include="gameboard.cpp" />
     <ClCompile Include="graphics.cpp" />

@@ -19,6 +19,9 @@
     <Filter Include="BMP">
       <UniqueIdentifier>{45a1621b-5bb4-4386-97e7-8f50e8a03bd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BacktrackResolver">
+      <UniqueIdentifier>{b3fda094-d99d-4e24-94b9-bce46e113954}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameboard.h">
@@ -29,6 +32,10 @@
     </ClInclude>
     <ClInclude Include="BMP.h">
       <Filter>BMP</Filter>
+    </ClInclude>
+    <ClInclude Include="defines.h" />
+    <ClInclude Include="BacktrackResolver.h">
+      <Filter>BacktrackResolver</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +48,9 @@
     </ClCompile>
     <ClCompile Include="BMP.cpp">
       <Filter>BMP</Filter>
+    </ClCompile>
+    <ClCompile Include="BacktrackResolver.cpp">
+      <Filter>BacktrackResolver</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

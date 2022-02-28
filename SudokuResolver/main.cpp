@@ -3,48 +3,63 @@
 
 #include "gameboard.h"
 #include "graphics.h"
-#include "BMP.h"
+#include "BacktrackResolver.h"
+#include "defines.h"
 
 
-void colourTest() {
+void Render(const Gameboard& gb) {
 
     SDL& main_ = SDL::GetInstance();
 
     while (!SDL::isCreated);
 
+    main_.changeBackgroundColour(0xFF, 0xFD, 0xD0, 0xff);
 
-    main_.drawGrid(GRID_POSITION::TOP_LEFT);
-    
-    std::vector<std::vector<uint16_t>> arr(9);
+    main_.drawGrid(GRID_POSITION::TOP_LEFT); 
+        
+    while (SDL::isCreated) {
 
-    for (size_t i = 0; i < 9; i++) {
+        main_.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray(), 0x1);
 
-        arr[i].resize(9);
-
-        for (size_t j = 0; j < 9; j++) {
-
-            arr[i][j] = 1 + rand() % 9;
-
-        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
     }
 
-    main_.fillGrid(GRID_POSITION::TOP_LEFT, arr);
+}
+
+void Resolve(Gameboard& gb) {
+
+
+    while (!SDL::isCreated);
+
+    gb.writeElement(1, 5, 7);
+    gb.writeElement(7, 7, 4);
+    gb.writeElement(2, 8, 1);
+    gb.writeElement(5, 1, 5);
+    gb.writeElement(6, 4, 1);
+
+    BacktrackResolver testResolver(gb);
+
+    testResolver.backtrack();
 
 }
 
-
 int main(int argc, char* argv[]) {
       
-   SDL::changeWindowDimensions(800, 600);
+   SDL::changeWindowDimensions(800, 600); 
+
+   Gameboard test;
+
+
    SDL& main_ = SDL::GetInstance();
    std::thread& t1 = main_.getWindowThread();
-   std::thread t2(colourTest);
+   std::thread t2(Render, std::ref(test));
+   std::thread t3(Resolve, std::ref(test));
 
-   main_.changeBackgroundColour(0xFF, 0xFD, 0xD0, 0xff);
    
    t1.join();
    t2.join();
+   t3.join();
    
    
 
