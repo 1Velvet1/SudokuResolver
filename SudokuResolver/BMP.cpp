@@ -16,13 +16,13 @@ BMP::BMP()
 
 }
 
-BMP& BMP::operator=(BMP&& other)
+BMP& BMP::operator=(BMP&& other) noexcept
 {
 
     std::swap(this->bmpDIB, other.bmpDIB);
     std::swap(this->bmpHeader, other.bmpHeader);
     std::swap(this->img, other.img);
-
+    
     this->bitDepth = other.bitDepth;
     this->DIBsize = other.DIBsize;
     this->height = other.height;
@@ -71,7 +71,7 @@ BMP::BMP(const char* path):path_(path)
         this->img.resize(this->height);
         for (auto& row : this->img) { row = std::vector<uint32_t>(this->width); }
 
-        uint32_t temp = 0;
+        RGBcolour temp = 0;
 
         for (auto& row : this->img) {
 

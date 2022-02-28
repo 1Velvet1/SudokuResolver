@@ -1,13 +1,12 @@
 #ifndef BMP___H
 #define BMP___H
 
-
 #include <cstdint>
 #include <vector>
 #include <fstream>
 
-using image = std::vector<std::vector<uint32_t>>;
-using byte = unsigned char;
+#include "defines.h"
+
 constexpr uint16_t bmpHeaderSize = 14;
 constexpr uint16_t bmpDIBsize = 40;
 
@@ -19,7 +18,7 @@ class BMP
 public:
     
     BMP();
-    BMP& operator=(BMP&& other);
+    BMP& operator=(BMP&& other) noexcept;
     explicit BMP(const char* path);
     ~BMP();
     image getImage() const;
