@@ -154,7 +154,7 @@ SDL::SDL() :window(nullptr), renderer(nullptr), backgroundCol({0x0, 0x0 ,0x0, 0x
 
 SDL::~SDL() {
 
-    if (this->isCreated) {
+    if (SDL::isCreated) {
 
         SDL_RenderClear(this->renderer);
         SDL_DestroyRenderer(this->renderer);
@@ -162,6 +162,7 @@ SDL::~SDL() {
         isCreated = false;
 
     }
+
 
 }
 
@@ -487,13 +488,13 @@ void SDL::clearGrid(const GRID_POSITION place)
 
 }
 
-void SDL::fillGrid(const GRID_POSITION place, const std::vector<std::vector<uint16_t>>& vals, const RGBcolour colour = 0x1) {
+void SDL::fillGrid(const GRID_POSITION place, const board& vals, const RGBcolour colour) {
 
     for (size_t i = 1; i < 10; i++) {
 
         for (size_t j = 1; j < 10; j++) {
 
-            if (vals[i - 1][j - 1] == 0) { continue; }
+            if (vals[i - 1][j - 1] == 0) { this->eraseNumber(place, i, j); continue; }
 
             this->drawNumber(place, i, j, vals[i - 1][j - 1], colour);
 
@@ -501,5 +502,21 @@ void SDL::fillGrid(const GRID_POSITION place, const std::vector<std::vector<uint
 
     }
 
+}
+
+
+void SDL::fillGrid(const GRID_POSITION place, const board& vals, const matrice& colourScheme) {
+
+    for (size_t i = 1; i < 10; i++) {
+
+        for (size_t j = 1; j < 10; j++) {
+
+            if (vals[i - 1][j - 1] == 0 || colourScheme[i - 1][j - 1] == 0) { this->eraseNumber(place, i, j); continue; }
+
+            this->drawNumber(place, i, j, vals[i - 1][j - 1], colourScheme[i-1][j-1]);
+
+        }
+
+    }
 
 }
