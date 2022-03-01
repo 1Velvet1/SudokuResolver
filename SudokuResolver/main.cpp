@@ -7,9 +7,7 @@
 #include "defines.h"
 
 
-
-
-void Resolve(Gameboard& gb) {
+void Render(Gameboard& gb) {
 
     SDL& sdl = SDL::GetInstance();
 
@@ -20,10 +18,14 @@ void Resolve(Gameboard& gb) {
     sdl.drawGrid(GRID_POSITION::TOP_LEFT);
     sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray());
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-    while (SDL::isCreated && !gb.checkCompletion()) {
+    if (gb.checkCompletion()) {
 
-        sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray(), gb.getColourScheme());
+        while (SDL::isCreated && !gb.checkCompletion()) {
+
+            sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray(), gb.getColourScheme());
+
+        }
+
 
     }
 
@@ -43,20 +45,20 @@ void Resolve(Gameboard& gb) {
 
 }
 
-void rr(Gameboard& gb) {
+void Solve(Gameboard& gb) {
     
     BacktrackResolver testResolver(gb);
-    testResolver.changeWaitPeriod(200);
+    //testResolver.changeWaitPeriod(20);
     while (!SDL::isCreated);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
     testResolver.backtrack();
 
 }
 
 int main(int argc, char* argv[]) {
-
 
     SDL::changeWindowDimensions(800, 600);
 
@@ -75,10 +77,12 @@ int main(int argc, char* argv[]) {
     test.writeElement(1, 8, 5);
     test.writeElement(5, 4, 4);
 
+    test.writeElement(5, 5, 4);
+
     SDL& main_ = SDL::GetInstance();
     std::thread& t1 = main_.getWindowThread();
-    std::thread t2(Resolve, std::ref(test));
-    std::thread t3(rr, std::ref(test));
+    std::thread t2(Render, std::ref(test));
+    std::thread t3(Solve, std::ref(test));
 
 
     t1.join();
