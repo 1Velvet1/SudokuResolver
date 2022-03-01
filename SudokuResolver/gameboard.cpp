@@ -4,17 +4,21 @@
 
 
 
-Gameboard::Gameboard() {
+Gameboard::Gameboard():solved(false)
+{
 
     this->vals_.resize(9);
+    this->colourScheme.resize(9);
 
     for (size_t i = 0; i < 9; i++) {
 
         this->vals_[i].resize(9);
+        this->colourScheme[i].resize(9);
 
         for (size_t j = 0; j < 9; j++) {
 
             this->vals_[i][j] = 0;
+            this->colourScheme[i][j] = 0;
 
         }
 
@@ -28,6 +32,16 @@ Gameboard::Gameboard(const board& vals) {
 
         this->vals_ = vals;
 
+        for (size_t i = 0; i < 9; i++) {
+
+            for (size_t j = 0; j < 9; j++) {
+
+                this->colourScheme[i][j] = vals[i][j] == 0 ? 0 : 0x1;
+
+            }
+
+        }
+
     }
     else {
 
@@ -40,7 +54,24 @@ Gameboard::Gameboard(const board& vals) {
 void Gameboard::writeElement(const size_t row, const size_t column, const uint16_t val)
 {
 
-    if (row < 9 && column < 9 && val < 10) { this->vals_[row][column] = val; }
+    if (row < 9 && column < 9 && val < 10) { 
+        
+        this->vals_[row][column] = val; 
+        this->colourScheme[row][column] = 0x1;
+        this->solved = false;
+
+    }
+
+}
+
+void Gameboard::writeColour(const size_t row, const size_t column, const RGBcolour colour)
+{
+
+    if (row < 9 && column < 9) {
+
+        this->colourScheme[row][column] = colour;
+
+    }
 
 }
 
@@ -55,6 +86,13 @@ uint16_t Gameboard::getElement(const size_t row, const size_t column) const
 board Gameboard::getBoardArray() const
 {
     return this->vals_;
+}
+
+matrice Gameboard::getColourScheme() const
+{
+
+    return this->colourScheme;
+
 }
 
 cell Gameboard::getCell(const size_t row, const size_t column) const
@@ -190,7 +228,7 @@ bool Gameboard::checkConflicts(const size_t row, const size_t column) const
     return true;
 }
 
-bool Gameboard::checkCompletion() const
+bool Gameboard::checkCompletion()
 {
     std::unordered_set<std::string> sudoku;
 
@@ -214,7 +252,8 @@ bool Gameboard::checkCompletion() const
 
     }
 
+    this->solved = true;
+
     return true;
 
 }
-
