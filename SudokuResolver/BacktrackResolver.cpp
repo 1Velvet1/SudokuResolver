@@ -1,8 +1,10 @@
 #include "BacktrackResolver.h"
+#include "graphics.h"
 #include <thread>
-#include <iostream>
+#include <wchar.h>
+#include <string>
 
-BacktrackResolver::BacktrackResolver(Gameboard& sudoku):sBoard(sudoku), isFilled(false)
+BacktrackResolver::BacktrackResolver(Gameboard& sudoku): isFilled(false), waitAmount(0), sBoard(sudoku)
 {
 }
 
@@ -10,21 +12,33 @@ void BacktrackResolver::backtrack() {
 
     size_t sRow = 0;
     size_t sCol = 0;
+    this->isFilled = false;
+
+    const auto start = std::chrono::high_resolution_clock::now();
 
     this->resolve(sRow, sCol);
 
+    const auto execTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
 
-    if (!this->sBoard.checkCompletion()) { std::cout << "I'm a big dumbass!\n"; }
-    else { std::cout << "YEAH!!!!!\nI'm cool!\n"; }
+    std::wstring msg = L"execution time: " + std::to_wstring(static_cast<size_t>(execTime.count())) + L" ms.";
+
+    if (SDL::isCreated) { MessageBox(NULL, msg.c_str(), L"Sudoku Resolver", MB_OK); }
+    
+    this->sBoard.checkCompletion();
 
 }
 
 void BacktrackResolver::resolve(const size_t row, const size_t col)
 {
 
+    if (!SDL::isCreated) { this->isFilled = true; return; }
+
     for (size_t i = 1; i < 10; i++) {
 
         this->sBoard.writeElement(row, col, i);
+        this->sBoard.writeColour(row, col, 0xFF0000);
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->waitAmount));
 
         if (this->sBoard.checkConflicts(row, col)) {
 
@@ -35,7 +49,8 @@ void BacktrackResolver::resolve(const size_t row, const size_t col)
 
             if (row == 8 && col == 8) { this->isFilled = true; return; }
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(140));
+            this->sBoard.writeColour(row, col, 0x0000FF);
+
             this->resolve(nRow, nCol);
 
             if (this->isFilled) { 
@@ -73,4 +88,11 @@ void BacktrackResolver::nextFreeCell(const size_t currRow, const size_t currCol,
         }
 
     }
+}
+
+
+void BacktrackResolver::changeWaitPeriod(size_t period) {
+
+    this->waitAmount = period;
+
 }
