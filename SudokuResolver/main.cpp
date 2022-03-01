@@ -18,9 +18,9 @@ void Render(Gameboard& gb) {
     sdl.drawGrid(GRID_POSITION::TOP_LEFT);
     sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray());
 
-    if (gb.checkCompletion()) {
+    if (gb.checkValid()) {
 
-        while (SDL::isCreated && !gb.checkCompletion()) {
+        while (SDL::isCreated && !gb.isSolved()) {
 
             sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray(), gb.getColourScheme());
 
@@ -48,7 +48,7 @@ void Render(Gameboard& gb) {
 void Solve(Gameboard& gb) {
     
     BacktrackResolver testResolver(gb);
-    //testResolver.changeWaitPeriod(20);
+    testResolver.changeWaitPeriod(20);
     while (!SDL::isCreated);
 
 
@@ -71,13 +71,16 @@ int main(int argc, char* argv[]) {
     test.writeElement(2, 0, 7);
     test.writeElement(8, 0, 4);
     test.writeElement(6, 4, 9);
-    test.writeElement(0, 5, 6);
+    test.writeElement(0, 5, 3);
     test.writeElement(8, 6, 1);
     test.writeElement(1, 1, 8);
     test.writeElement(1, 8, 5);
     test.writeElement(5, 4, 4);
-
-    test.writeElement(5, 5, 4);
+    test.writeElement(1, 6, 7);
+    test.writeElement(2, 7, 2);
+    test.writeElement(3, 3, 5);
+    test.writeElement(0, 8, 6);
+    test.writeElement(7, 4, 8);
 
     SDL& main_ = SDL::GetInstance();
     std::thread& t1 = main_.getWindowThread();

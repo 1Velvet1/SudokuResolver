@@ -26,6 +26,7 @@ public:
     cell getCell(const size_t row, const size_t column) const;
     //returns true if the digit is suitable
     bool checkConflicts(const size_t row, const size_t column) const;
+    bool checkValid() const;
     bool checkCompletion();
     constexpr bool isSolved() const { return this->solved; }
 

@@ -14,7 +14,7 @@ void BacktrackResolver::backtrack() {
     size_t sCol = 0;
     this->isFilled = false;
 
-    if (!this->sBoard.checkCompletion()) { MessageBox(NULL, L"The entered sudoku is incorrect!", L"Sudoku Resolver", MB_OK); return; }
+    if (!this->sBoard.checkValid()) { MessageBox(NULL, L"The entered sudoku is incorrect!", L"Sudoku Resolver", MB_OK); return; }
 
     const auto start = std::chrono::high_resolution_clock::now();
 

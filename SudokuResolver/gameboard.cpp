@@ -240,7 +240,9 @@ bool Gameboard::checkCompletion()
             std::string col = "c" + std::to_string(j) + "v" + std::to_string(this->vals_[i][j]);
             std::string cell = "cl" + std::to_string(i / 3) + std::to_string(j / 3) + "v" + std::to_string(this->vals_[i][j]);
 
-            if (sudoku.count(row) || sudoku.count(col) || sudoku.count(cell)) { return false; }
+            if (sudoku.count(row) || sudoku.count(col) || sudoku.count(cell)) { 
+                return false; 
+            }
 
             sudoku.insert(row);
             sudoku.insert(col);
@@ -253,6 +255,38 @@ bool Gameboard::checkCompletion()
     }
 
     this->solved = true;
+
+    return true;
+
+}
+
+bool Gameboard::checkValid() const
+{
+    std::unordered_set<std::string> sudoku;
+
+    for (size_t i = 0; i < 9; i++) {
+
+        for (size_t j = 0; j < 9; j++) {
+
+            if (this->vals_[i][j] == 0) { continue; }
+
+            std::string row = "r" + std::to_string(i) + "v" + std::to_string(this->vals_[i][j]);
+            std::string col = "c" + std::to_string(j) + "v" + std::to_string(this->vals_[i][j]);
+            std::string cell = "cl" + std::to_string(i / 3) + std::to_string(j / 3) + "v" + std::to_string(this->vals_[i][j]);
+
+            if (sudoku.count(row) || sudoku.count(col) || sudoku.count(cell)) {
+                return false;
+            }
+
+            sudoku.insert(row);
+            sudoku.insert(col);
+            sudoku.insert(cell);
+
+
+        }
+
+
+    }
 
     return true;
 
