@@ -22,6 +22,12 @@
     <Filter Include="BacktrackResolver">
       <UniqueIdentifier>{b3fda094-d99d-4e24-94b9-bce46e113954}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ext\lib\x86">
+      <UniqueIdentifier>{8da49754-14a8-4f6f-b21c-42713a658771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\lib\x64">
+      <UniqueIdentifier>{ec5fdc8a-3202-4ec3-a620-7487fa667f9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gameboard.h">
@@ -55,16 +61,17 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\SDL2\lib\x86\SDL2main.lib">
-      <Filter>ext\lib</Filter>
+      <Filter>ext\lib\x86</Filter>
     </Library>
     <Library Include="lib\SDL2\lib\x86\SDL2.lib">
-      <Filter>ext\lib</Filter>
+      <Filter>ext\lib\x86</Filter>
     </Library>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lib\SDL2\lib\x86\SDL2.dll">
-      <Filter>ext\lib</Filter>
-    </None>
+    <Library Include="lib\SDL2\lib\x64\SDL2.lib">
+      <Filter>ext\lib\x64</Filter>
+    </Library>
+    <Library Include="lib\SDL2\lib\x64\SDL2main.lib">
+      <Filter>ext\lib\x64</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\1.bmp">
@@ -94,5 +101,13 @@
     <Image Include="res\9.bmp">
       <Filter>ext\res</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lib\SDL2\lib\x86\SDL2.dll">
+      <Filter>ext\lib\x86</Filter>
+    </None>
+    <None Include="lib\SDL2\lib\x64\SDL2.dll">
+      <Filter>ext\lib\x64</Filter>
+    </None>
   </ItemGroup>
 </Project>
