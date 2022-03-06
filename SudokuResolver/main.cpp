@@ -7,50 +7,48 @@
 #include "defines.h"
 
 
-void Render(Gameboard& gb) {
+
+void Render(const Gameboard& gb, const GRID_POSITION gPos) {
 
     SDL& sdl = SDL::GetInstance();
-
 
     while (!SDL::isCreated);
 
     sdl.changeBackgroundColour(0xFF, 0xFD, 0xD0, 0xff);
-    sdl.drawGrid(GRID_POSITION::TOP_LEFT);
-    sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray());
+    sdl.drawGrid(gPos);
+    sdl.fillGrid(gPos, gb.getBoardArray());
 
     if (gb.checkValid()) {
 
         while (SDL::isCreated && !gb.isSolved()) {
 
-            sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray(), gb.getColourScheme());
+            sdl.fillGrid(gPos, gb.getBoardArray(), gb.getColourScheme());
 
         }
-
 
     }
 
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
-    if (gb.checkCompletion()) {
+    if (gb.isSolved()) {
 
-        sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray(), 0x00FF00);
+        sdl.fillGrid(gPos, gb.getBoardArray(), 0x00FF00);
         
     }
     else {
 
-        sdl.fillGrid(GRID_POSITION::TOP_LEFT, gb.getBoardArray(), 0xFF0000);
+        sdl.fillGrid(gPos, gb.getBoardArray(), 0xFF0000);
 
     }
 
-
 }
 
-void Solve(Gameboard& gb) {
+
+void Solve(Gameboard& gb, const size_t waitTime = 0) {
     
     BacktrackResolver testResolver(gb);
-    testResolver.changeWaitPeriod(20);
+    testResolver.changeWaitPeriod(waitTime);
     while (!SDL::isCreated);
-
 
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
@@ -61,38 +59,26 @@ void Solve(Gameboard& gb) {
 int main(int argc, char* argv[]) {
 
     SDL::changeWindowDimensions(800, 600);
+    
 
-    Gameboard test;
-    test.writeElement(0, 1, 1);
-    test.writeElement(5, 7, 8);
-    test.writeElement(1, 8, 3);
-    test.writeElement(5, 4, 5);
-    test.writeElement(7, 2, 2);
-    test.writeElement(2, 0, 7);
-    test.writeElement(8, 0, 4);
-    test.writeElement(6, 4, 9);
-    test.writeElement(0, 5, 3);
-    test.writeElement(8, 6, 1);
-    test.writeElement(1, 1, 8);
-    test.writeElement(1, 8, 5);
-    test.writeElement(5, 4, 4);
-    test.writeElement(1, 6, 7);
-    test.writeElement(2, 7, 2);
-    test.writeElement(3, 3, 5);
-    test.writeElement(0, 8, 6);
-    test.writeElement(7, 4, 8);
+    Gameboard test; 
+    test.readFromFile("C:\\Users\\Laptop\\Desktop\\123.txt");     
+    Gameboard test1;
+    test1.readFromFile("C:\\Users\\Laptop\\Desktop\\1234.txt");
 
     SDL& main_ = SDL::GetInstance();
     std::thread& t1 = main_.getWindowThread();
-    std::thread t2(Render, std::ref(test));
-    std::thread t3(Solve, std::ref(test));
+    std::thread t2(Render, std::ref(test), GRID_POSITION::TOP_LEFT);
+    std::thread t22(Render, std::ref(test1), GRID_POSITION::TOP_RIGHT);
+    std::thread t3(Solve, std::ref(test), 0);
+    std::thread t33(Solve, std::ref(test1), 0);
 
 
     t1.join();
     t2.join();
-    t3.join();
-
-
+    t22.join();
+    t3.join();  
+    t33.join();
 
     return 0;
 
