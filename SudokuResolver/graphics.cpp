@@ -88,7 +88,6 @@ void SDL::eventHandler() {
         
 
         this->UpdateRender();
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
     }
 
@@ -189,8 +188,11 @@ void SDL::drawNumber(const GRID_POSITION place, const size_t row, const size_t c
 
     if (row == 0 || column == 0 || number >= 10 || column > 9 || row > 9) { return; }
 
+
     const auto& curNum = this->numbersMap.find(number);
     const image& num = curNum->second;
+
+    this->screenMatriceLock.lock();
     matrice temp = this->screenMatrice;
     size_t xOffset = 0;
     size_t yOffset = 0;
@@ -230,9 +232,9 @@ void SDL::drawNumber(const GRID_POSITION place, const size_t row, const size_t c
 
     }
 
-    while (isUpdating);
 
     this->screenMatrice = temp;
+    this->screenMatriceLock.unlock();
 
 }
 
@@ -240,6 +242,7 @@ void SDL::eraseNumber(const GRID_POSITION place, const size_t row, const size_t 
 
     if (row == 0 || column == 0 || row > 9 || column > 9) { return; }
 
+    this->screenMatriceLock.lock();
     matrice temp = this->screenMatrice;
     size_t xOffset = 0;
     size_t yOffset = 0;
@@ -259,8 +262,8 @@ void SDL::eraseNumber(const GRID_POSITION place, const size_t row, const size_t 
 
         if (!this->rightGridDrawn) { return; }
 
-        yOffset = TOP_GRID_OFFSET + 22 * (row - 1) + 2;
-        xOffset = TOP_RIGHT_GRID_xOFFSET + 2* (column - 1) + 2;
+        yOffset = TOP_GRID_OFFSET + 22 * (row - 1) + 1;
+        xOffset = TOP_RIGHT_GRID_xOFFSET + 22 * (column - 1) + 1;
 
 
         break;
@@ -282,9 +285,8 @@ void SDL::eraseNumber(const GRID_POSITION place, const size_t row, const size_t 
 
     }
 
-    while (isUpdating);
-
     this->screenMatrice = temp;
+    this->screenMatriceLock.unlock();
 
 }
 
@@ -317,7 +319,8 @@ void SDL::RGBtoColr(const RGBcolour& RGB, uint8_t& R, uint8_t& G, uint8_t& B) co
 
 }
 
-matrice SDL::scaleMatrice() const{
+matrice SDL::scaleMatrice(){
+
 
     matrice temp;
     matrice base = this->screenMatrice;   
@@ -336,6 +339,7 @@ matrice SDL::scaleMatrice() const{
 
     }
 
+
     return temp;
 
 }
@@ -349,12 +353,13 @@ void SDL::UpdateRender() {
     uint8_t B = 0;
     matrice currentScreen;
 
+    this->screenMatriceLock.lock();
     if (BASE_WINDOW_WIDTH == this->winWidth && BASE_WINDOW_HEIGHT == this->winHeight) {currentScreen = this->screenMatrice; }
     else { currentScreen = this->scaleMatrice(); }
+    this->screenMatriceLock.unlock();
 
     this->ClearRender();
 
-    isUpdating = true;
     for (const auto& row : currentScreen) {
 
         for (const auto& col : row) {
@@ -375,7 +380,6 @@ void SDL::UpdateRender() {
         y++;
 
     }
-    isUpdating = false;
 
     SDL_RenderPresent(this->renderer);
 
@@ -383,7 +387,9 @@ void SDL::UpdateRender() {
 
 void SDL::drawGrid(const GRID_POSITION place) {
     
+    this->screenMatriceLock.lock();
     matrice temp = this->screenMatrice;
+
     size_t rows = 0;    
 
     switch (place) {
@@ -436,9 +442,9 @@ void SDL::drawGrid(const GRID_POSITION place) {
    
 
     }
-    while (isUpdating);
 
     this->screenMatrice = temp;
+    this->screenMatriceLock.unlock();
 
 }
 
@@ -448,6 +454,7 @@ void SDL::clearGrid(const GRID_POSITION place)
     size_t xOffset = 0;
     size_t yOffset = 0;
 
+    this->screenMatriceLock.lock();
     matrice temp = this->screenMatrice;
 
     switch (place) {
@@ -485,6 +492,10 @@ void SDL::clearGrid(const GRID_POSITION place)
 
     }
 
+    this->screenMatrice = temp;
+    this->screenMatriceLock.unlock();
+
+
 
 }
 
@@ -504,7 +515,6 @@ void SDL::fillGrid(const GRID_POSITION place, const board& vals, const RGBcolour
 
 }
 
-
 void SDL::fillGrid(const GRID_POSITION place, const board& vals, const matrice& colourScheme) {
 
     for (size_t i = 1; i < 10; i++) {
@@ -513,7 +523,7 @@ void SDL::fillGrid(const GRID_POSITION place, const board& vals, const matrice& 
 
             if (vals[i - 1][j - 1] == 0 || colourScheme[i - 1][j - 1] == 0) { this->eraseNumber(place, i, j); continue; }
 
-            this->drawNumber(place, i, j, vals[i - 1][j - 1], colourScheme[i-1][j-1]);
+            this->drawNumber(place, i, j, vals[i - 1][j - 1], colourScheme[i - 1][j - 1]);
 
         }
 

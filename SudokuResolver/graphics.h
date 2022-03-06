@@ -7,6 +7,7 @@
 #include <thread>
 #include <vector>
 #include <map>
+#include <mutex>
 
 #include "lib/SDL2/include/SDL.h"
 #include "BMP.h"
@@ -104,7 +105,7 @@ public: //non-static
 
 private:
 
-    matrice scaleMatrice() const;
+    matrice scaleMatrice();
     uint32_t toRGB(uint8_t R, uint8_t G, uint8_t B) const;
     void RGBtoColr(const RGBcolour& RGB, uint8_t& R, uint8_t& G, uint8_t& B) const;
     void ClearRender();
@@ -114,11 +115,13 @@ private:
     SDL();
     SDL(SDL&);
 
+    //thread management
+    std::thread thisThread;
+    std::mutex screenMatriceLock;
+    //local variables
     bool leftGridDrawn;
     bool rightGridDrawn;
-    bool isUpdating;
     matrice screenMatrice;
-    std::thread thisThread;
     SDL_Window* window;
     SDL_Renderer* renderer;
     int winWidth;
