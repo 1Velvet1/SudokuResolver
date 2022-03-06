@@ -75,6 +75,33 @@ void Gameboard::writeColour(const size_t row, const size_t column, const RGBcolo
 
 }
 
+void Gameboard::readFromFile(const std::string& path)
+{
+
+    std::ifstream in(path.c_str(), std::ios::in);
+
+    uint16_t temp = 0;
+
+    if (in.is_open()) {
+
+        for (size_t i = 0; i < 9; i++) {
+
+            for (size_t j = 0; j < 9; j++) {
+
+                in >> temp;
+
+                this->writeElement(i, j, temp);
+
+            }
+
+        }
+
+    }
+
+    in.close();
+
+}
+
 uint16_t Gameboard::getElement(const size_t row, const size_t column) const
 {
 
@@ -95,8 +122,17 @@ matrice Gameboard::getColourScheme() const
 
 }
 
-cell Gameboard::getCell(const size_t row, const size_t column) const
+bool Gameboard::checkConflicts(const size_t row, const size_t column) const
 {
+
+    const uint32_t current = this->vals_[row][column];
+
+    for (size_t i = 0; i < 9; i++) {
+                
+        if ((i != column && current == this->vals_[row][i]) || (i != row && current == this->vals_[i][column])) { return false; }
+        
+    }
+
 
     size_t startRow;
     size_t startColumn;
@@ -169,59 +205,30 @@ cell Gameboard::getCell(const size_t row, const size_t column) const
 
 
     }
-    
-    if (startRow == 10 || startColumn == 10) { return cell(); }
-
-    cell temp(9);
-    size_t counter = 0;
-    
-    for (size_t i = startRow; i < startRow + 3; i++) {               
-
-        for (size_t j = startColumn; j < startColumn + 3; j++) {
-
-            temp[counter] = this->vals_[i][j];
-            counter++;
-
-        }
-
-    }
-
-    return temp;
-
-}
-
-bool Gameboard::checkConflicts(const size_t row, const size_t column) const
-{
-
-    const uint32_t current = this->vals_[row][column];
-
-    for (size_t i = 0; i < 9; i++) {
-                
-        if ((i != column && current == this->vals_[row][i]) || (i != row && current == this->vals_[i][column])) { return false; }
-        
-    }
-
-    cell temp = this->getCell(row, column);
 
     bool check = false;
 
-    for (size_t i = 0; i < 9; i++) {
+    for (size_t i = startRow; i < startRow + 3; i++) {
 
-        if (temp[i] == current) {
+        for (size_t j = startColumn; j < startColumn + 3; j++) {
 
-            if (!check) {
+            if (current == this->vals_[i][j]) {
 
-                check = true;
+                if (!check) {
+
+                    check = true;
+
+                }
+                else {
+
+                    return false;
+
+                }
 
             }
-            else {
-
-                return false;
-
-            }
+            
 
         }
-
 
     }
 

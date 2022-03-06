@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <Windows.h>
 #include <vector>
+#include <fstream>
 
 #include "defines.h"
 
@@ -19,11 +20,11 @@ public:
 
     void writeElement(const size_t row, const size_t column, const uint16_t val);
     void writeColour(const size_t row, const size_t column, const RGBcolour colour);
+    void readFromFile(const std::string& path);
 
     uint16_t getElement(const size_t row, const size_t column) const;
     board getBoardArray() const;
     matrice getColourScheme() const;  
-    cell getCell(const size_t row, const size_t column) const;
     //returns true if the digit is suitable
     bool checkConflicts(const size_t row, const size_t column) const;
     bool checkValid() const;
