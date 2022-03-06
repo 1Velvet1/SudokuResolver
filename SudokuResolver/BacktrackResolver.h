@@ -30,7 +30,8 @@ private:
 
 private:
     
-    bool isFilled;
+    volatile bool isFilled;
+    size_t callAmount;
     size_t waitAmount;
     Gameboard& sBoard;
 
