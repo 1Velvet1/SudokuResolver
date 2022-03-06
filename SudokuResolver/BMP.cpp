@@ -60,8 +60,8 @@ BMP::BMP(const char* path):path_(path)
 
         input.read(reinterpret_cast<char*>(this->bmpDIB), bmpDIBsize);
 
-        this->height = (static_cast<int>(bmpDIB[7]) << 24) + (static_cast<int>(bmpDIB[6]) << 16) + (static_cast<int>(bmpDIB[5]) << 8) + static_cast<int>(bmpDIB[4]);
-        this->width = (static_cast<int>(bmpDIB[11]) << 24) + (static_cast<int>(bmpDIB[10]) << 16) + (static_cast<int>(bmpDIB[9]) << 8) + static_cast<int>(bmpDIB[8]);
+        this->width = (static_cast<int>(bmpDIB[7]) << 24) + (static_cast<int>(bmpDIB[6]) << 16) + (static_cast<int>(bmpDIB[5]) << 8) + static_cast<int>(bmpDIB[4]);
+        this->height = (static_cast<int>(bmpDIB[11]) << 24) + (static_cast<int>(bmpDIB[10]) << 16) + (static_cast<int>(bmpDIB[9]) << 8) + static_cast<int>(bmpDIB[8]);
 
         this->bitDepth = (static_cast<int>(bmpDIB[15]) << 8) + static_cast<int>(bmpDIB[14]);
         this->paddingAmount = (4 - (this->bitDepth / 8 * this->width) % 4) % 4;
@@ -120,4 +120,9 @@ size_t BMP::getHeight() const
 size_t BMP::getWidth() const
 {
     return this->width;
+}
+
+size_t BMP::getDepth() const
+{
+    return this->bitDepth;
 }

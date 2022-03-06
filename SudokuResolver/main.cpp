@@ -21,7 +21,7 @@ void Render(const Gameboard& gb, const GRID_POSITION gPos) {
     if (gb.checkValid()) {
 
         while (SDL::isCreated && !gb.isSolved()) {
-
+            
             sdl.fillGrid(gPos, gb.getBoardArray(), gb.getColourScheme());
 
         }
@@ -42,7 +42,6 @@ void Render(const Gameboard& gb, const GRID_POSITION gPos) {
     }
 
 }
-
 
 void Solve(Gameboard& gb, const size_t waitTime = 0) {
     
@@ -70,8 +69,8 @@ int main(int argc, char* argv[]) {
     std::thread& t1 = main_.getWindowThread();
     std::thread t2(Render, std::ref(test), GRID_POSITION::TOP_LEFT);
     std::thread t22(Render, std::ref(test1), GRID_POSITION::TOP_RIGHT);
-    std::thread t3(Solve, std::ref(test), 0);
-    std::thread t33(Solve, std::ref(test1), 0);
+    std::thread t3(Solve, std::ref(test), 15);
+    std::thread t33(Solve, std::ref(test1), 200);
 
 
     t1.join();

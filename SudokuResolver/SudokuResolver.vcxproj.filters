@@ -101,6 +101,9 @@
     <Image Include="res\9.bmp">
       <Filter>ext\res</Filter>
     </Image>
+    <Image Include="res\icon.bmp">
+      <Filter>ext\res</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="lib\SDL2\lib\x86\SDL2.dll">

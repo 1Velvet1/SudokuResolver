@@ -24,6 +24,7 @@ public:
     image getImage() const;
     size_t getHeight() const;
     size_t getWidth() const;
+    size_t getDepth() const;
 
 private:
 

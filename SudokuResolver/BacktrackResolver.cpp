@@ -32,7 +32,7 @@ void BacktrackResolver::resolve(const size_t row, const size_t col)
         this->sBoard.writeElement(row, col, i);
         this->sBoard.writeColour(row, col, 0xFF0000);
 
-        std::this_thread::sleep_for(std::chrono::nanoseconds(this->waitAmount));
+        std::this_thread::sleep_for(std::chrono::milliseconds(this->waitAmount));
 
         if (this->sBoard.checkConflicts(row, col)) {
 

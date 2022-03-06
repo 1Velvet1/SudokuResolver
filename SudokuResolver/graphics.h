@@ -127,7 +127,9 @@ private:
     int winWidth;
     int winHeight;
     std::vector<uint8_t> backgroundCol;
+    //resources
     std::map<uint16_t, image> numbersMap;
+    std::map<std::string, image> GUI;
 
 };
 

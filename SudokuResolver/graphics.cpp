@@ -17,11 +17,11 @@ SDL_INIT_ERROR SDL::initSDL() {
     rightGridDrawn = false;
 
     if (SDL_Init(SDL_INIT_EVERYTHING)) { return SDL_INIT_ERROR::SDL_INIT_SUBSYSTEM; }
-    
+
     this->window = SDL_CreateWindow("Sudoku Solver", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->winWidth, this->winHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (this->window == nullptr) { return SDL_INIT_ERROR::SDL_WINDOW_CREATE; }
 
-    SDL_SetWindowMinimumSize(this->window, BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);    
+    SDL_SetWindowMinimumSize(this->window, BASE_WINDOW_WIDTH, BASE_WINDOW_HEIGHT);
 
     this->screenMatrice.resize(BASE_WINDOW_HEIGHT);
     for (auto& row : this->screenMatrice) { row = std::vector<RGBcolour>(BASE_WINDOW_WIDTH); }
@@ -39,12 +39,46 @@ SDL_INIT_ERROR SDL::initSDL() {
 
         }
         catch (const std::exception& IOexception) {
-            
+
             std::cout << "Cannot load resource files: " << IOexception.what() << "\n";
 
         }
 
     }
+
+    BMP iconFile;    
+
+    try {
+
+        iconFile = BMP(".\\res\\icon.bmp");
+
+    }
+    catch (const std::exception& IOexception) {
+
+        std::cout << "Cannot load resource files: " << IOexception.what() << "\n";
+
+    }
+
+    const image& icon = iconFile.getImage(); 
+    const size_t iconSize = iconFile.getWidth() * iconFile.getHeight();
+    RGBcolour* pixels = new RGBcolour[iconSize];
+    size_t pixel = 0;
+
+    for (const auto& row : icon) {
+
+        for (const auto& col : row) {
+
+            pixels[pixel] = col;
+            pixel++;
+
+        }
+
+    }
+    SDL_Surface* iconSurf = SDL_CreateRGBSurfaceFrom(pixels, iconFile.getWidth(), iconFile.getHeight(), iconFile.getDepth(), sizeof(RGBcolour) * iconFile.getWidth(), NULL, NULL, NULL, 0xFF000000);
+
+    SDL_SetWindowIcon(this->window, iconSurf);
+    SDL_FreeSurface(iconSurf);
+    delete[] pixels;
 
     this->renderer = SDL_CreateRenderer(this->window, -1, NULL);
     if (this->renderer == nullptr) { return SDL_INIT_ERROR::SDL_RENDERER_CREATE; }
