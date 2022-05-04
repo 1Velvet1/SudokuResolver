@@ -2,9 +2,9 @@
 #include "graphics.h"
 #include <thread>
 
-BacktrackResolver::BacktrackResolver(Gameboard& sudoku): isFilled(false), waitAmount(0), callAmount(0), sBoard(sudoku)
-{
-}
+BacktrackResolver::BacktrackResolver(Gameboard& sudoku): 
+    isFilled(false), waitAmount(0), callAmount(0), sBoard(sudoku)
+{}
 
 void BacktrackResolver::backtrack() {
 
@@ -21,6 +21,7 @@ void BacktrackResolver::backtrack() {
     this->sBoard.checkCompletion();
 
 }
+
 void BacktrackResolver::resolve(const size_t row, const size_t col)
 {
 
@@ -89,7 +90,6 @@ void BacktrackResolver::nextFreeCell(const size_t currRow, const size_t currCol,
 
     }
 }
-
 
 void BacktrackResolver::changeWaitPeriod(size_t period) {
 

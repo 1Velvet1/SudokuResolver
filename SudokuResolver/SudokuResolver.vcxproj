@@ -105,7 +105,17 @@
       <StackReserveSize>3</StackReserveSize>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)lib\SDL2\lib\x86\SDL2.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(ProjectDir)lib\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+xcopy /y /d "$(ProjectDir)res\icon.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\1.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\2.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\3.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\4.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\5.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\6.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\7.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\8.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\9.bmp" "$(OutDir)res\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -123,7 +133,17 @@
       <StackReserveSize>20</StackReserveSize>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)lib\SDL2\lib\x64\SDL2.dll" "$(OutDir)"</Command>
+      <Command>xcopy /y /d "$(ProjectDir)lib\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+xcopy /y /d "$(ProjectDir)res\icon.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\1.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\2.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\3.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\4.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\5.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\6.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\7.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\8.bmp" "$(OutDir)res\"
+xcopy /y /d "$(ProjectDir)res\9.bmp" "$(OutDir)res\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,7 +165,8 @@
       <StackReserveSize>3</StackReserveSize>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(ProjectDir)lib\SDL2\lib\x86\SDL2.dll" "$(OutDir)"
+      <Command>xcopy /y /d "$(ProjectDir)lib\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+xcopy /y /d "$(ProjectDir)res\icon.bmp" "$(OutDir)res\"
 xcopy /y /d "$(ProjectDir)res\1.bmp" "$(OutDir)res\"
 xcopy /y /d "$(ProjectDir)res\2.bmp" "$(OutDir)res\"
 xcopy /y /d "$(ProjectDir)res\3.bmp" "$(OutDir)res\"
@@ -177,6 +198,7 @@ xcopy /y /d "$(ProjectDir)res\9.bmp" "$(OutDir)res\"</Command>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(ProjectDir)lib\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+xcopy /y /d "$(ProjectDir)res\icon.bmp" "$(OutDir)res\"
 xcopy /y /d "$(ProjectDir)res\1.bmp" "$(OutDir)res\"
 xcopy /y /d "$(ProjectDir)res\2.bmp" "$(OutDir)res\"
 xcopy /y /d "$(ProjectDir)res\3.bmp" "$(OutDir)res\"

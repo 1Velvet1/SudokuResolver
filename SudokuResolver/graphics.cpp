@@ -31,7 +31,7 @@ SDL_INIT_ERROR SDL::initSDL() {
     for (size_t i = 1; i < 10; i++) {
 
         std::string path = ".\\res\\" + std::to_string(i) + ".bmp";
-
+        
         try {
 
             tempBMP = BMP(path.c_str());
@@ -41,6 +41,7 @@ SDL_INIT_ERROR SDL::initSDL() {
         catch (const std::exception& IOexception) {
 
             std::cout << "Cannot load resource files: " << IOexception.what() << "\n";
+            return SDL_INIT_ERROR::SDL_NUMBER_LOAD;
 
         }
 
@@ -99,6 +100,7 @@ SDL_INIT_ERROR SDL::initSDL() {
 void SDL::eventHandler() {
 
     SDL_Event e;
+    uint32_t mouseStatus;
     int x, y;
 
     while (SDL::isCreated) {
@@ -112,6 +114,9 @@ void SDL::eventHandler() {
                 break;
             case SDL_WINDOWEVENT:
                 SDL_GetWindowSize(this->window, &this->winWidth, &this->winHeight);
+                break;
+            case SDL_MOUSEMOTION:
+                mouseStatus = SDL_GetMouseState(&x, &y);
                 break;
             default:
                 break;
@@ -161,6 +166,10 @@ void SDL::invoke() {
 
         break;
 
+    case SDL_INIT_ERROR::SDL_NUMBER_LOAD:
+
+        std::cout << "SDL number resources load error\n";
+
     case SDL_INIT_ERROR::SDL_INIT_OK:
 
         SDL::isCreated = true;
@@ -181,6 +190,7 @@ void SDL::invoke() {
 
 SDL::SDL() :window(nullptr), renderer(nullptr), backgroundCol({0x0, 0x0 ,0x0, 0xFF}), winWidth(SDL::SCREENWIDTH), winHeight(SDL::SCREENHEIGHT)
 {      
+
     this->thisThread = std::thread(&SDL::invoke, this);
 
 }
@@ -353,7 +363,7 @@ void SDL::RGBtoColr(const RGBcolour& RGB, uint8_t& R, uint8_t& G, uint8_t& B) co
 
 }
 
-matrice SDL::scaleMatrice(){
+matrice SDL::scaleMatrice() const {
 
 
     matrice temp;

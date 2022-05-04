@@ -27,6 +27,7 @@ enum class SDL_INIT_ERROR {
     SDL_RENDERER_CREATE = 1 << 2,
     SDL_RENDER_CLEAR    = 1 << 3,
     SDL_BACKGROUND      = 1 << 4,
+    SDL_NUMBER_LOAD     = 1 << 5,
     SDL_INIT_OK         = 0
 
 };
@@ -35,7 +36,8 @@ enum class GRID_POSITION {
 
     TOP_LEFT = 1,
     TOP_RIGHT,
-    NUMBER_GRID
+    NUMBER_GRID,
+    GUI
 
 };
 
@@ -86,18 +88,32 @@ public: //non-static
     void changeBackgroundColour(const uint8_t red, const uint8_t green, const uint8_t blue, const uint8_t alpha);    
 
     /// <summary>
-/// call this function to draw a number in specific place
-/// </summary>
-/// <param name="place">The grid in which the number should be drawn</param>
-/// <param name="row">row of the number: 1..9</param>
-/// <param name="column">column of the number 1..9</param>
-/// <param name="number">number to be drawn: 1..9</param>
-/// <param name="colour">the colour of the number (black is 0x1, 0x0 is background)</param>
+    /// call this function to draw a number in specific place
+    /// </summary>
+    /// <param name="place">The grid in which the number should be drawn</param>
+    /// <param name="row">row of the number: 1..9</param>
+    /// <param name="column">column of the number 1..9</param>
+    /// <param name="number">number to be drawn: 1..9</param>
+    /// <param name="colour">the colour of the number (black is 0x1, 0x0 is background)</param>
     void drawNumber(const GRID_POSITION place, const size_t row, const size_t column, const uint16_t number, const RGBcolour colour);
+    
+    /// <summary>
+    /// call this function to erase a number in specific place
+    /// </summary>
+    /// <param name="place">The grid in which the number should be drawn</param>
+    /// <param name="row">row of the number: 1..9</param>
+    /// <param name="column">column of the number 1..9</param>
     void eraseNumber(const GRID_POSITION place, const size_t row, const size_t column);
+
+    /// <summary>
+    /// Draw an empty grid
+    /// </summary>
     void drawGrid(const GRID_POSITION place);
 
+
+
     void fillGrid(const GRID_POSITION place, const board& vals, const matrice& colourScheme);
+
     void fillGrid(const GRID_POSITION place, const board& vals, const RGBcolour colour = 0x1);
     void clearGrid(const GRID_POSITION place);
 
@@ -105,7 +121,7 @@ public: //non-static
 
 private:
 
-    matrice scaleMatrice();
+    matrice scaleMatrice() const;
     uint32_t toRGB(uint8_t R, uint8_t G, uint8_t B) const;
     void RGBtoColr(const RGBcolour& RGB, uint8_t& R, uint8_t& G, uint8_t& B) const;
     void ClearRender();

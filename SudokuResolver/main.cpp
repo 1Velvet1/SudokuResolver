@@ -17,7 +17,7 @@ void Render(const Gameboard& gb, const GRID_POSITION gPos) {
     sdl.changeBackgroundColour(0xFF, 0xFD, 0xD0, 0xff);
     sdl.drawGrid(gPos);
     sdl.fillGrid(gPos, gb.getBoardArray());
-
+    
     if (gb.checkValid()) {
 
         while (SDL::isCreated && !gb.isSolved()) {
@@ -61,16 +61,16 @@ int main(int argc, char* argv[]) {
     
 
     Gameboard test; 
-    test.readFromFile("C:\\Users\\Laptop\\Desktop\\123.txt");     
+    test.readFromFile(".\\1.txt");     
     Gameboard test1;
-    test1.readFromFile("C:\\Users\\Laptop\\Desktop\\1234.txt");
+    test1.readFromFile(".\\2.txt");
 
     SDL& main_ = SDL::GetInstance();
     std::thread& t1 = main_.getWindowThread();
     std::thread t2(Render, std::ref(test), GRID_POSITION::TOP_LEFT);
     std::thread t22(Render, std::ref(test1), GRID_POSITION::TOP_RIGHT);
-    std::thread t3(Solve, std::ref(test), 15);
-    std::thread t33(Solve, std::ref(test1), 200);
+    std::thread t3(Solve, std::ref(test), 10);
+    std::thread t33(Solve, std::ref(test1), 350);
 
 
     t1.join();
